@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import useRecipeStore from 'components/useRecipeStore';
+import useRecipeStore from './recipeStore';
 import EditRecipeForm from './EditRecipeForm';
 import DeleteRecipeButton from './DeleteRecipeButton';
 
@@ -9,6 +9,7 @@ const RecipeDetails = () => {
   const recipe = useRecipeStore((state) =>
     state.recipes.find((recipe) => recipe.id === parseInt(recipeId, 10))
   );
+  
   const navigate = useNavigate();
 
   if (!recipe) {
