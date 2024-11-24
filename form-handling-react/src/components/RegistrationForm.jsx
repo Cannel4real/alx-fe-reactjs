@@ -1,32 +1,28 @@
 import React, { useState } from "react";
 
 const RegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+  // Manage individual state variables
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
+  // Validation function
   const validate = () => {
     const newErrors = {};
-    if (!formData.username) newErrors.username = "Username is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.password) newErrors.password = "Password is required";
+    if (!username) newErrors.username = "Username is required";
+    if (!email) newErrors.email = "Email is required";
+    if (!password) newErrors.password = "Password is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  // Form submission handler
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Submitted:", formData); // Replace with API call
+      console.log("Submitted:", { username, email, password }); // Replace with API call
       setSubmitted(true);
     }
   };
@@ -38,9 +34,8 @@ const RegistrationForm = () => {
         <label>Username:</label>
         <input
           type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
+          value={username} // Controlled input for username
+          onChange={(e) => setUsername(e.target.value)}
         />
         {errors.username && <p>{errors.username}</p>}
       </div>
@@ -48,9 +43,8 @@ const RegistrationForm = () => {
         <label>Email:</label>
         <input
           type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
+          value={email} // Controlled input for email
+          onChange={(e) => setEmail(e.target.value)}
         />
         {errors.email && <p>{errors.email}</p>}
       </div>
@@ -58,9 +52,8 @@ const RegistrationForm = () => {
         <label>Password:</label>
         <input
           type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
+          value={password} // Controlled input for password
+          onChange={(e) => setPassword(e.target.value)}
         />
         {errors.password && <p>{errors.password}</p>}
       </div>
