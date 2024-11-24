@@ -10,10 +10,13 @@ const fetchPosts = async () => {
 };
 
 const PostsComponent = () => {
-  // Use "error" as the query key in an array
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["error"], // ["error"] as the queryKey
+    queryKey: ["cacheTime", "staleTime", "refetchOnWindowFocus", "keepPreviousData"], // Query key array
     queryFn: fetchPosts,
+    cacheTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 30, // 30 seconds
+    refetchOnWindowFocus: true, // Refetch when the window is focused
+    keepPreviousData: true, // Preserve old data during fetch
   });
 
   if (isLoading) {
