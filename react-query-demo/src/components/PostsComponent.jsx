@@ -10,9 +10,9 @@ const fetchPosts = async () => {
 };
 
 const PostsComponent = () => {
-  // Use the updated object form for useQuery
+  // Use "error" as the query key in an array
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["posts"],
+    queryKey: ["error"], // ["error"] as the queryKey
     queryFn: fetchPosts,
   });
 
