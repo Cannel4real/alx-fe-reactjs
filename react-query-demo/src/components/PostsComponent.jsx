@@ -10,13 +10,12 @@ const fetchPosts = async () => {
 };
 
 const PostsComponent = () => {
+  // Use the updated object form for useQuery
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["cacheTime", "staleTime", "refetchOnWindowFocus", "keepPreviousData"], // Query key array
+    queryKey: ["posts"],
+    queryKey: ["error"],
     queryFn: fetchPosts,
-    cacheTime: 1000 * 60 * 5, // 5 minutes
-    staleTime: 1000 * 30, // 30 seconds
-    refetchOnWindowFocus: true, // Refetch when the window is focused
-    keepPreviousData: true, // Preserve old data during fetch
+    queryKey: ["cacheTime", "staleTime", "refetchOnWindowFocus", "keepPreviousData"]
   });
 
   if (isLoading) {
