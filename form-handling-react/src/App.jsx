@@ -1,15 +1,17 @@
 import React from "react";
-import RegistrationForm from "./components/RegistrationForm";
-import FormikForm from "./components/FormikForm";
+import { QueryClient, QueryClientProvider } from "react-query";
+import PostsComponent from "./components/PostsComponent";
+
+// Initialize Query Client
+const queryClient = new QueryClient();
 
 const App = () => (
-  <div>
-    <h1>React Form Handling</h1>
-    <h2>Controlled Form</h2>
-    <RegistrationForm />
-    <h2>Formik Form</h2>
-    <FormikForm />
-  </div>
+  <QueryClientProvider client={queryClient}>
+    <div>
+      <h1>React Query Demo: Fetching Posts</h1>
+      <PostsComponent />
+    </div>
+  </QueryClientProvider>
 );
 
 export default App;
