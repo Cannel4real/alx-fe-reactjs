@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const fetchPosts = async () => {
   const response = await fetch("https://jsonplaceholder.typicode.com/posts");
@@ -10,8 +10,11 @@ const fetchPosts = async () => {
 };
 
 const PostsComponent = () => {
-  // Use React Query's useQuery to fetch data
-  const { data, isLoading, isError, refetch } = useQuery("posts", fetchPosts);
+  // Use the updated object form for useQuery
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ["posts"],
+    queryFn: fetchPosts,
+  });
 
   if (isLoading) {
     return <div>Loading posts...</div>;
