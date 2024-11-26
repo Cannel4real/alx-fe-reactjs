@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './components/Home';
 import About from './components/About';
-import Profile from './components/profile';
+import Profile from './components/Profile';
 import BlogPost from './components/BlogPost'; // Adjust the path if necessary
 import ProtectedRoute from './components/routes/ProtectedRoute'; // Adjust the path if necessary
 
@@ -25,7 +25,7 @@ function App() {
         }
       />
       <Route path="/blog/:postId" element={<BlogPost />} />
-      </Routes>
+    </Routes>
     </Router>
   );
 }
