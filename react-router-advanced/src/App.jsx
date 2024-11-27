@@ -5,7 +5,7 @@ import Home from './components/Home';
 import About from './components/About';
 import Profile from './components/Profile';
 import BlogPost from './components/BlogPost'; // Adjust the path if necessary
-import ProtectedRoute from './components/routes/ProtectedRoute'; // Adjust the path if necessary
+import ProtectedRoute from './components/ProtectedRoute'; // Adjust the path if necessary
 
 function App() {
   return (
