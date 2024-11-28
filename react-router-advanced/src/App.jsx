@@ -1,32 +1,28 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 
 import Home from './components/Home';
 import About from './components/About';
 import Profile from './components/Profile';
-import BlogPost from './components/BlogPost'; // Adjust the path if necessary
-import ProtectedRoute from './components/ProtectedRoute'; // Adjust the path if necessary
+import ProfileDetails from './components/ProfileDetails';
+// import ProfileSettings from './components/ProfileSettings';
+import BlogPost from './components/BlogPost';
+
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/profile/*" element={<Profile />} />
-        <Route path="/blog/:postId" element={<BlogPost />} />
-        Using the Protected Route
-      <Route
-        path="/profile/*"
-        element={
-          <ProtectedRoute isAuthenticated={true}>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="/blog/:postId" element={<BlogPost />} />
+
+    <nav>
+      <Link to="/">Home</Link> | <Link to="/about">About</Link> | <Link to="/profile">Profile</Link>
+    </nav>
+
+    <Routes>
+       <Route path="details" element={<ProfileDetails />} />
+          {/* <Route path="settings" element={<ProfileSettings />} /> */}
+        <Route path="/blog" element={<BlogPost />} />
     </Routes>
-    </Router>
+  </Router>
   );
 }
 
