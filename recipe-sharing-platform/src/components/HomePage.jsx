@@ -15,4 +15,14 @@ import { Link } from "react-router-dom";
       <p className="text-gray-600">{recipe.summary}</p>
     </div>
   </div>
+
+  <div className="text-center my-6">
+  <Link
+    to="/add-recipe"
+    className="bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300"
+  >
+    Add New Recipe
+  </Link>
+</div>
 </Link>
+
