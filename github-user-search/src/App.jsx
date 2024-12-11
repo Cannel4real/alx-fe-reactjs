@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import SearchInput from './components/SearchInput';
+import Search from './components/Search';
 const App = () => {
   return (
     <Router>
       <div>
         <header>
           <h1>GitHub User Search</h1>
-          <SearchInput />
+          <Search />
         </header>
         <main>
           <Routes>
