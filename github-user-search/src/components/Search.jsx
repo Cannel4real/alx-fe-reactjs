@@ -1,59 +1,82 @@
+// src/components/Search.jsx
 import React, { useState } from 'react';
+import axios from 'axios';
 
-const Search = ({ onSearch }) => {
-  const [username, setUsername] = useState('');
-  const [location, setLocation] = useState('');
-  const [minRepos, setMinRepos] = useState('');
+const Search = () => {
+  const [query, setQuery] = useState('');
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    onSearch({ username, location, minRepos });
+    if (!query.trim()) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.get(`https://api.github.com/search/users?q=${query}`);
+      setUsers(response.data.items || []);
+    } catch (err) {
+      setError('Failed to fetch users. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded p-6 mb-4">
-      <h2 className="text-lg font-bold mb-4">Advanced GitHub User Search</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter username"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Location</label>
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter location"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Min Repositories</label>
-          <input
-            type="number"
-            value={minRepos}
-            onChange={(e) => setMinRepos(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter minimum repos"
-          />
-        </div>
-      </div>
-      <div className="mt-4">
+    <div className="max-w-2xl mx-auto p-4">
+      <form onSubmit={handleSearch} className="mb-6">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search GitHub users..."
+          className="w-full p-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
         <button
           type="submit"
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-md hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500"
+          className="mt-2 px-4 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700"
         >
           Search
         </button>
+      </form>
+
+      {loading && <p className="text-center">Loading...</p>}
+      {error && <p className="text-center text-red-500">{error}</p>}
+
+      <div className="space-y-4">
+        {users.length > 0 &&
+          users.map((user) => (
+            <div
+              key={user.id}
+              className="p-4 border rounded shadow hover:bg-gray-50 flex items-center space-x-4"
+            >
+              <img
+                src={user.avatar_url}
+                alt={user.login}
+                className="w-12 h-12 rounded-full"
+              />
+              <div>
+                <a
+                  href={user.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-indigo-600 hover:underline"
+                >
+                  {user.login}
+                </a>
+                {user.type && <p className="text-sm text-gray-600">{user.type}</p>}
+              </div>
+            </div>
+          ))}
       </div>
-    </form>
+
+      {!loading && !error && users.length === 0 && (
+        <p className="text-center text-gray-600">No users found. Try a different search.</p>
+      )}
+    </div>
   );
 };
 
