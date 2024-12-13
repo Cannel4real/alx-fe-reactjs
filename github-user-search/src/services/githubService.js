@@ -1,7 +1,7 @@
 // src/services/githubService.js
 import axios from 'axios';
 
-const GITHUB_API_BASE_URL = 'https://api.github.com';
+const GITHUB_API_BASE_URL = 'https://api.github.com/search/users?q';
 
 export const searchUsers = async ({ username, location, minRepos }) => {
   try {
