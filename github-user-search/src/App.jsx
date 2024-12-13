@@ -1,24 +1,32 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// src/App.jsx
+import React, { useState } from 'react';
 import Search from './components/Search';
+import Results from './components/results';
+import { searchUsers } from './services/githubService';
+
 const App = () => {
+  const [users, setUsers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useState({});
+
+  const handleSearch = async (params) => {
+    setSearchParams(params);
+    const data = await searchUsers(params);
+    setUsers(data.items);
+  };
+
+  const handleLoadMore = async () => {
+    const nextPage = page + 1;
+    const data = await searchUsers({ ...searchParams, page: nextPage });
+    setUsers((prevUsers) => [...prevUsers, ...data.items]);
+    setPage(nextPage);
+  };
+
   return (
-    <>
-    <Router>
-      <div>
-        <header>
-          <h1>GitHub User Search</h1>
-          <Search />
-        </header>
-        <main>
-          <Routes>
-            <Route path="/" element={<div>Welcome to the GitHub User Search Application</div>} />
-            <Route path="/search" element={<div>Search Page</div>} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
-    </>
+    <div className="max-w-4xl mx-auto p-4">
+      <Search onSearch={handleSearch} />
+      <Results users={users} onLoadMore={handleLoadMore} />
+    </div>
   );
 };
 

@@ -1,51 +1,59 @@
 import React, { useState } from 'react';
-import fetchUserData from '../services/githubService';
 
-const Search = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+const Search = ({ onSearch }) => {
+  const [username, setUsername] = useState('');
+  const [location, setLocation] = useState('');
+  const [minRepos, setMinRepos] = useState('');
 
-  const handleSearch = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(false);
-    setUser(null);
-
-    try {
-      const data = await fetchUserData(searchTerm);
-      setUser(data);
-    } catch (err) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+    onSearch({ username, location, minRepos });
   };
 
   return (
-    <div>
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Search GitHub Username"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
-      {loading && <p>Loading...</p>}
-      {error && <p>Looks like we can't find the user</p>}
-      {user && (
+    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded p-6 mb-4">
+      <h2 className="text-lg font-bold mb-4">Advanced GitHub User Search</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
-          <img src={user.avatar_url} alt={`${user.login}'s avatar`} width="100" />
-          <p>Name: {user.name || 'N/A'}</p>
-          <p>
-            Profile: <a href={user.html_url}>{user.login}</a>
-          </p>
+          <label className="block text-sm font-medium text-gray-700">Username</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter username"
+          />
         </div>
-      )}
-    </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Location</label>
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter location"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Min Repositories</label>
+          <input
+            type="number"
+            value={minRepos}
+            onChange={(e) => setMinRepos(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Enter minimum repos"
+          />
+        </div>
+      </div>
+      <div className="mt-4">
+        <button
+          type="submit"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-md hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500"
+        >
+          Search
+        </button>
+      </div>
+    </form>
   );
 };
 
