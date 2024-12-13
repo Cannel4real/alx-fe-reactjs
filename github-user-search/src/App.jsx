@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Search from './components/Search';
 const App = () => {
   return (
+    <>
     <Router>
       <div>
         <header>
@@ -17,6 +18,7 @@ const App = () => {
         </main>
       </div>
     </Router>
+    </>
   );
 };
 
