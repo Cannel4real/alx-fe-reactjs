@@ -9,6 +9,18 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Function to fetch user data
+  const fetchUserData = async (apiQuery) => {
+    try {
+      const response = await axios.get(`https://api.github.com/search/users`, {
+        params: { q: apiQuery },
+      });
+      return response.data.items || [];
+    } catch (err) {
+      throw new Error('Failed to fetch users');
+    }
+  };
+
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim() && !location.trim()) return;
@@ -23,13 +35,10 @@ const Search = () => {
         apiQuery += ` location:${location.trim()}`;
       }
 
-      const response = await axios.get(`https://api.github.com/search/users`, {
-        params: { q: apiQuery },
-      });
-
-      setUsers(response.data.items || []);
+      const userData = await fetchUserData(apiQuery);
+      setUsers(userData);
     } catch (err) {
-      setError('Failed to fetch users. Please try again.');
+      setError(err.message);
     } finally {
       setLoading(false);
     }
